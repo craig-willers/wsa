@@ -212,7 +212,8 @@ export function Footer({
 
         <div className="flex flex-wrap items-center justify-center gap-[14px] text-label-02 md:justify-between">
           <p className="m-0">{copyright}</p>
-          <ul className="m-0 flex list-none gap-[14px] p-0 font-emphasis">
+          {/* Mobile shows Privacy Policy first (Figma 4833:1172); md+ shows Terms first */}
+          <ul className="m-0 flex list-none flex-row-reverse gap-[7px] p-0 font-emphasis md:flex-row md:gap-[14px]">
             {legalLinks.map((l) => (
               <li key={l.label}>
                 <a className={cx('text-default no-underline hover:underline', focusRing)} href={l.href}>
