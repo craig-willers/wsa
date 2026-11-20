@@ -3,13 +3,14 @@
  * "🤡 ＋ v3 (WSA) – Component Library". Names follow the Figma variable names.
  */
 :root {
-  /* Color */
-  --color-grey-0: #ffffff;
-  --color-grey-800: #262626;
+  /* Color — the grey palette (--color-grey-*) is defined in the Tailwind @theme in src/index.css,
+     which emits it as :root variables under the same names. */
   --text-color-default: #1b1b1b;
   --border-color-subtle: #dfdfdf;
   --action-neutral-background-color-default: rgba(164, 163, 168, 0);
   --button-disabled-background-color: rgba(5, 5, 6, 0.04);
+  /* Not in Figma — hover state for the newsletter button once it is enabled. */
+  --button-hover-background-color: rgba(5, 5, 6, 0.08);
 
   /* Spacing */
   --padding-none: 0px;

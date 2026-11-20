@@ -1,9 +1,59 @@
+@import 'tailwindcss';
 @import './styles/tokens.css';
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+/*
+ * Map the WSA design tokens (src/styles/tokens.css) into the Tailwind theme.
+ *  `inline` makes utilities emit the token variable itself (e.g. text-default →
+ * color: var(--text-color-default)), so tokens.css stays the source of truth for semantic tokens.
+ */
+/* Palette tokens: same name in Tailwind and in CSS (bg-grey-800 ↔ var(--color-grey-800)). */
+@theme {
+  --color-grey-0: #ffffff;
+  --color-grey-800: #262626;
+}
+
+@theme inline {
+  /* Semantic colors → bg-*, text-*, border-*, outline-* */
+  --color-default: var(--text-color-default);
+  --color-subtle: var(--border-color-subtle);
+  --color-action-neutral: var(--action-neutral-background-color-default);
+  --color-button-disabled: var(--button-disabled-background-color);
+  --color-button-hover: var(--button-hover-background-color);
+
+  /* Spacing → p-*, m-*, gap-*  (padding/margin tokens share one scale) */
+  --spacing-none: var(--padding-none);
+  --spacing-xxs: var(--paddingxxs);
+  --spacing-xs: var(--paddingxs);
+  --spacing-sm: var(--paddingsm);
+  --spacing-md: var(--padding);
+  --spacing-lg: var(--paddinglg);
+
+  /* Radius → rounded-* */
+  --radius-sm: var(--borderradiussm);
+  --radius-lg: var(--borderradiuslg);
+  --radius-round: var(--borderradiusround);
+
+  /* Font family → font-brand */
+  --font-brand: var(--font-family-brand);
+
+  /* Font weight → font-emphasis */
+  --font-weight-emphasis: var(--label-03-emphasis-weight);
+
+  /* Type styles → text-heading-compact-02, text-label-03, text-label-02 */
+  --text-heading-compact-02: var(--heading-compact-02-size);
+  --text-heading-compact-02--line-height: var(--heading-compact-02-line-height);
+  --text-heading-compact-02--letter-spacing: var(--heading-compact-02-letter-spacing);
+  --text-heading-compact-02--font-weight: var(--heading-compact-02-weight);
+
+  --text-label-03: var(--label-03-size);
+  --text-label-03--line-height: var(--label-03-line-height);
+  --text-label-03--letter-spacing: var(--label-03-letter-spacing);
+  --text-label-03--font-weight: var(--label-03-weight);
+
+  --text-label-02: var(--label-02-size);
+  --text-label-02--line-height: var(--label-02-line-height);
+  --text-label-02--letter-spacing: var(--label-02-letter-spacing);
+  --text-label-02--font-weight: var(--label-02-weight);
 }
 
 body {
