@@ -1,7 +1,9 @@
 import { useId, useState, type CSSProperties, type FormEvent } from 'react';
 import logo from './assets/logo.svg';
+import logoBlue from './assets/blue/logo.svg';
 import flagAe from './assets/flag-ae.svg';
 import arrowDropDown from './assets/arrow-drop-down.svg';
+import arrowDropDownBlue from './assets/blue/arrow-drop-down.svg';
 import {
   sections as defaultSections,
   partnerLogos,
@@ -9,10 +11,14 @@ import {
   schoolLinks,
   socialLinks,
   legalLinks,
+  resolveSrc,
   type FooterSection,
+  type FooterTheme,
 } from './footerData';
 
 export type FooterProps = {
+  /** Colour scheme: "white" (SEO / White) or "blue" (SEO / Blue, brand background with the Dark semantic mode). */
+  theme?: FooterTheme;
   sections?: FooterSection[];
   /** Section ids expanded by default in the mobile accordion. */
   defaultOpenSections?: string[];
@@ -24,20 +30,45 @@ export type FooterProps = {
 
 const cx = (...classes: (string | false | undefined)[]) => classes.filter(Boolean).join(' ');
 
-const focusRing =
-  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-default focus-visible:rounded-[2px]';
-const linkClass = cx(
-  'inline-flex items-center gap-xs text-label-03 text-default no-underline hover:underline',
-  focusRing,
-);
+const focusBase = 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:rounded-[2px]';
 
 /**
- * Footer — SEO / White
- * Figma: WSA Component Library, node 4833:926 (Desktop, 1024, 768, Mobile, Mobile Open).
+ * Per-theme classes. Colours that are the same semantic token in both Figma variants (borders,
+ * button backgrounds) are not listed: the blue footer sets data-theme="dark", which switches those
+ * tokens to the Figma "Dark" mode values (see src/styles/tokens.css).
+ */
+const themes = {
+  white: {
+    root: 'bg-grey-0 text-default',
+    text: 'text-default',
+    legal: 'text-default',
+    focus: 'focus-visible:outline-default',
+    input: 'border-subtle text-default placeholder:text-default focus-visible:outline-default',
+    button: 'text-default',
+    logo,
+    arrow: arrowDropDown,
+  },
+  blue: {
+    root: 'bg-brand-secondary text-inverse',
+    text: 'text-inverse',
+    legal: 'text-subtle-inverse',
+    focus: 'focus-visible:outline-inverse',
+    input: 'border-default-border text-inverse placeholder:text-subtle-text focus-visible:outline-inverse',
+    button: 'text-button-disabled-fg enabled:text-inverse',
+    logo: logoBlue,
+    arrow: arrowDropDownBlue,
+  },
+} as const;
+
+/**
+ * Footer — SEO / White and SEO / Blue (theme prop)
+ * Figma: WSA Component Library, White node 4833:926, Blue node 4754:9593
+ * (each: Desktop, 1024, 768, Mobile, Mobile Open).
  * One responsive component; the mobile accordion replaces the "Mobile" / "Mobile Open" variants.
  * Breakpoints: <md Mobile accordion · md (768) two-up · lg (1024) four-up · xl (1280) Desktop five-up.
  */
 export function Footer({
+  theme = 'white',
   sections = defaultSections,
   defaultOpenSections = [],
   editionLabel = 'UAE Edition',
@@ -48,6 +79,9 @@ export function Footer({
   const [open, setOpen] = useState<Set<string>>(() => new Set(defaultOpenSections));
   const [email, setEmail] = useState('');
   const uid = useId();
+  const t = themes[theme];
+  const focusRing = cx(focusBase, t.focus);
+  const linkClass = cx('inline-flex items-center gap-xs text-label-03 no-underline hover:underline', t.text, focusRing);
 
   const toggle = (id: string) =>
     setOpen((prev) => {
@@ -69,7 +103,7 @@ export function Footer({
       </label>
       <input
         id={`${uid}-email`}
-        className="h-8 w-full rounded-sm border border-subtle bg-action-neutral px-sm py-xxs font-brand text-label-03 text-default placeholder:text-default focus-visible:outline-2 focus-visible:-outline-offset-1 focus-visible:outline-default"
+        className={cx('h-8 w-full rounded-sm border bg-action-neutral px-sm py-xxs font-brand text-label-03 focus-visible:outline-2 focus-visible:-outline-offset-1', t.input)}
         type="email"
         placeholder="Email address"
         autoComplete="email"
@@ -77,7 +111,7 @@ export function Footer({
         onChange={(e) => setEmail(e.target.value)}
       />
       <button
-        className="h-8 cursor-pointer rounded-sm border-0 bg-button-disabled px-[14px] py-xs font-brand text-label-03 font-emphasis text-default enabled:hover:bg-button-hover disabled:cursor-not-allowed"
+        className={cx('h-8 cursor-pointer rounded-sm border-0 bg-button-disabled px-[14px] py-xs font-brand text-label-03 font-emphasis enabled:hover:bg-button-hover disabled:cursor-not-allowed', t.button)}
         type="submit"
         disabled={!email.trim()}
       >
@@ -87,14 +121,14 @@ export function Footer({
   );
 
   return (
-    <footer className="bg-grey-0 font-brand text-default">
+    <footer className={cx('font-brand', t.root)} data-theme={theme === 'blue' ? 'dark' : undefined}>
       <div className="mx-auto flex max-w-[1408px] flex-col gap-md px-md py-[29px] xl:px-8">
         <a
           className={cx('block self-start leading-none', focusRing)}
           href="/"
           aria-label="Which School Advisor home"
         >
-          <img className="h-[28px] w-[81px]" src={logo} alt="" width={81} height={28} />
+          <img className="h-[28px] w-[81px]" src={t.logo} alt="" width={81} height={28} />
         </a>
 
         <nav
@@ -113,9 +147,10 @@ export function Footer({
                   // Mobile: accordion row with a rule underneath
                   'mb-[6px] border-b border-subtle pb-[6px]',
                   // md: two-up grid, vertical rule between columns, horizontal rule under row one
-                  'md:m-0 md:flex-col md:gap-xs md:border-b-0 md:pb-0',
+                  'md:flex-col md:gap-xs',
                   isRightCol ? 'md:border-l md:pl-md' : 'md:pr-md',
-                  isFirstRow && 'md:mb-lg md:border-b md:pb-lg',
+                  // one border-b/padding/margin class per breakpoint so they can't override each other
+                  isFirstRow ? 'md:mb-lg md:border-b md:pb-lg' : 'md:m-0 md:border-b-0 md:pb-0',
                   // lg+: single row, vertical rule before every column but the first
                   'lg:m-0 lg:border-b-0 lg:px-md lg:pb-0',
                   i === 0 ? 'lg:border-l-0 lg:pl-0' : 'lg:border-l',
@@ -128,7 +163,8 @@ export function Footer({
                   <button
                     type="button"
                     className={cx(
-                      'flex h-10 w-full cursor-pointer items-center border-0 bg-transparent px-xxs text-left font-brand text-heading-compact-02 text-default md:hidden',
+                      'flex h-10 w-full cursor-pointer items-center border-0 bg-transparent px-xxs text-left font-brand text-heading-compact-02 md:hidden',
+                      t.text,
                       focusRing,
                     )}
                     aria-expanded={isOpen}
@@ -145,7 +181,7 @@ export function Footer({
                   {section.links.map((link) => (
                     <li key={link.label} className="flex">
                       <a className={cx(linkClass, 'min-h-8 px-xxs md:min-h-[22px] md:px-0')} href={link.href}>
-                        {link.icon && <img className="size-4 flex-none" src={link.icon} alt="" width={16} height={16} />}
+                        {link.icon && <img className="size-4 flex-none" src={resolveSrc(link.icon, theme)} alt="" width={16} height={16} />}
                         {link.label}
                       </a>
                     </li>
@@ -164,7 +200,7 @@ export function Footer({
             <img
               key={p.name}
               className="block h-[calc(var(--h)*0.88)] w-[calc(var(--w)*0.88)] md:h-(--h) md:w-(--w)"
-              src={p.src}
+              src={resolveSrc(p.src, theme)}
               alt={p.name}
               style={{ '--w': `${p.width}px`, '--h': `${p.height}px` } as CSSProperties}
             />
@@ -175,7 +211,8 @@ export function Footer({
           <button
             type="button"
             className={cx(
-              'inline-flex min-h-9 cursor-pointer items-center gap-xs border-0 bg-transparent p-0 pb-md font-brand text-default md:pb-0',
+              'inline-flex min-h-9 cursor-pointer items-center gap-xs border-0 bg-transparent p-0 pb-md font-brand md:pb-0',
+              t.text,
               focusRing,
             )}
             onClick={onEditionClick}
@@ -183,7 +220,7 @@ export function Footer({
           >
             <img className="block h-4 w-[22px]" src={flagAe} alt="" width={22} height={16} />
             <span className="text-label-03">{editionLabel}</span>
-            <img src={arrowDropDown} alt="" width={20} height={20} />
+            <img src={t.arrow} alt="" width={20} height={20} />
           </button>
           <ul className="m-0 flex list-none flex-wrap justify-center gap-x-lg gap-y-md p-0 pb-md md:justify-start md:pb-0">
             {primaryLinks.map((l) => (
@@ -203,20 +240,20 @@ export function Footer({
             {socialLinks.map((s) => (
               <li key={s.name}>
                 <a className={cx('block size-6', focusRing)} href={s.href} aria-label={s.name}>
-                  <img className="block size-6" src={s.src} alt="" width={24} height={24} />
+                  <img className="block size-6" src={resolveSrc(s.src, theme)} alt="" width={24} height={24} />
                 </a>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-[14px] text-label-02 md:justify-between">
+        <div className={cx('flex flex-wrap items-center justify-center gap-[14px] text-label-02 md:justify-between', t.legal)}>
           <p className="m-0">{copyright}</p>
           {/* Mobile shows Privacy Policy first (Figma 4833:1172); md+ shows Terms first */}
           <ul className="m-0 flex list-none flex-row-reverse gap-[7px] p-0 font-emphasis md:flex-row md:gap-[14px]">
             {legalLinks.map((l) => (
               <li key={l.label}>
-                <a className={cx('text-default no-underline hover:underline', focusRing)} href={l.href}>
+                <a className={cx('no-underline hover:underline', t.legal, focusRing)} href={l.href}>
                   {l.label}
                 </a>
               </li>

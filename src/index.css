@@ -9,7 +9,13 @@
 /* Palette tokens: same name in Tailwind and in CSS (bg-grey-800 ↔ var(--color-grey-800)). */
 @theme {
   --color-grey-0: #ffffff;
+  --color-grey-50: #f4f4f4;
   --color-grey-800: #262626;
+  --color-neptune-400: #00bdfe;
+  --color-alpha-light-24: rgba(255, 255, 255, 0.24);
+  --color-alpha-light-36: rgba(255, 255, 255, 0.36);
+  --color-alpha-light-56: rgba(255, 255, 255, 0.56);
+  --color-alpha-light-80: rgba(255, 255, 255, 0.8);
 }
 
 @theme inline {
@@ -19,6 +25,12 @@
   --color-action-neutral: var(--action-neutral-background-color-default);
   --color-button-disabled: var(--button-disabled-background-color);
   --color-button-hover: var(--button-hover-background-color);
+  --color-button-disabled-fg: var(--button-disabled-foreground-color);
+  --color-subtle-text: var(--text-color-subtle);
+  --color-default-border: var(--border-color-default);
+  --color-inverse: var(--text-color-inverse);
+  --color-subtle-inverse: var(--text-color-subtle-inverse);
+  --color-brand-secondary: var(--brand-background-secondary);
 
   /* Spacing → p-*, m-*, gap-*  (padding/margin tokens share one scale) */
   --spacing-none: var(--padding-none);
@@ -58,7 +70,7 @@
 
 body {
   margin: 0;
-  background: #f4f4f4;
+  background: var(--color-grey-50);
   color: var(--text-color-default);
   font-family: var(--font-family-brand);
 }

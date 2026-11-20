@@ -9,11 +9,29 @@ import instagramIcon from './assets/instagram.svg';
 import linkedinIcon from './assets/linkedin.svg';
 import facebookIcon from './assets/facebook.svg';
 import xIcon from './assets/x.svg';
+import homeIconBlue from './assets/blue/home.svg';
+import ruleIconBlue from './assets/blue/rule.svg';
+import contactSupportIconBlue from './assets/blue/contact-support.svg';
+import edinformaLogoBlue from './assets/blue/edinforma.svg';
+import whichMediaLogoBlue from './assets/blue/which-media.svg';
+import schoolsComparedLogoBlue from './assets/blue/schools-compared.svg';
+import parentsUnitedLogoBlue from './assets/blue/parents-united.svg';
+import instagramIconBlue from './assets/blue/instagram.svg';
+import linkedinIconBlue from './assets/blue/linkedin.svg';
+import facebookIconBlue from './assets/blue/facebook.svg';
+import xIconBlue from './assets/blue/x.svg';
+
+export type FooterTheme = 'white' | 'blue';
+
+/** An image source, either shared by every theme or given per theme (e.g. white artwork on blue). */
+export type ThemedSrc = string | Record<FooterTheme, string>;
+
+export const resolveSrc = (src: ThemedSrc, theme: FooterTheme) => (typeof src === 'string' ? src : src[theme]);
 
 export type FooterLink = {
   label: string;
   href: string;
-  icon?: string;
+  icon?: ThemedSrc;
 };
 
 export type FooterSection = {
@@ -28,7 +46,7 @@ export type FooterSection = {
 
 export type FooterLogo = {
   name: string;
-  src: string;
+  src: ThemedSrc;
   width: number;
   height: number;
   href?: string;
@@ -36,7 +54,7 @@ export type FooterLogo = {
 
 export type SocialLink = {
   name: string;
-  src: string;
+  src: ThemedSrc;
   href: string;
 };
 
@@ -88,9 +106,9 @@ export const sections: FooterSection[] = [
     title: 'More',
     withNewsletter: true,
     links: [
-      { label: 'UAE Home', href: '#', icon: homeIcon },
-      { label: 'Take a Survey', href: '#', icon: ruleIcon },
-      { label: 'School Enquiries', href: '#', icon: contactSupportIcon },
+      { label: 'UAE Home', href: '#', icon: { white: homeIcon, blue: homeIconBlue } },
+      { label: 'Take a Survey', href: '#', icon: { white: ruleIcon, blue: ruleIconBlue } },
+      { label: 'School Enquiries', href: '#', icon: { white: contactSupportIcon, blue: contactSupportIconBlue } },
     ],
   },
   {
@@ -109,10 +127,10 @@ export const sections: FooterSection[] = [
 ];
 
 export const partnerLogos: FooterLogo[] = [
-  { name: 'Edinforma', src: edinformaLogo, width: 91.667, height: 13.474 },
-  { name: 'Which Media', src: whichMediaLogo, width: 67, height: 26 },
-  { name: 'SchoolsCompared', src: schoolsComparedLogo, width: 73, height: 27 },
-  { name: 'Parents United UAE', src: parentsUnitedLogo, width: 76, height: 36 },
+  { name: 'Edinforma', src: { white: edinformaLogo, blue: edinformaLogoBlue }, width: 91.667, height: 13.474 },
+  { name: 'Which Media', src: { white: whichMediaLogo, blue: whichMediaLogoBlue }, width: 67, height: 26 },
+  { name: 'SchoolsCompared', src: { white: schoolsComparedLogo, blue: schoolsComparedLogoBlue }, width: 73, height: 27 },
+  { name: 'Parents United UAE', src: { white: parentsUnitedLogo, blue: parentsUnitedLogoBlue }, width: 76, height: 36 },
 ];
 
 export const primaryLinks: FooterLink[] = [
@@ -129,10 +147,10 @@ export const schoolLinks: FooterLink[] = [
 ];
 
 export const socialLinks: SocialLink[] = [
-  { name: 'Instagram', src: instagramIcon, href: '#' },
-  { name: 'LinkedIn', src: linkedinIcon, href: '#' },
-  { name: 'Facebook', src: facebookIcon, href: '#' },
-  { name: 'X', src: xIcon, href: '#' },
+  { name: 'Instagram', src: { white: instagramIcon, blue: instagramIconBlue }, href: '#' },
+  { name: 'LinkedIn', src: { white: linkedinIcon, blue: linkedinIconBlue }, href: '#' },
+  { name: 'Facebook', src: { white: facebookIcon, blue: facebookIconBlue }, href: '#' },
+  { name: 'X', src: { white: xIcon, blue: xIconBlue }, href: '#' },
 ];
 
 export const legalLinks: FooterLink[] = [

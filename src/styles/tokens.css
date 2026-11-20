@@ -11,6 +11,12 @@
   --button-disabled-background-color: rgba(5, 5, 6, 0.04);
   /* Not in Figma — hover state for the newsletter button once it is enabled. */
   --button-hover-background-color: rgba(5, 5, 6, 0.08);
+  --button-disabled-foreground-color: rgba(5, 5, 6, 0.24);
+  --text-color-subtle: #474747;
+  --border-color-default: #a8a8a8;
+  --text-color-inverse: var(--color-grey-0);
+  --text-color-subtle-inverse: var(--color-alpha-light-80);
+  --brand-background-secondary: var(--color-neptune-400);
 
   /* Spacing */
   --padding-none: 0px;
@@ -49,4 +55,19 @@
   --label-02-emphasis-weight: 600;
   --label-02-line-height: 16px;
   --label-02-letter-spacing: 0.32px;
+}
+
+/*
+ * "Dark" mode of the Figma Semantic Colors collection — used on brand-coloured surfaces such as the
+ * blue footer. Only the semantic tokens whose value changes between modes are overridden.
+ */
+[data-theme='dark'] {
+  --text-color-default: var(--color-grey-50);
+  --text-color-subtle: var(--color-alpha-light-36);
+  --border-color-subtle: var(--color-alpha-light-56);
+  --border-color-default: var(--color-alpha-light-80);
+  --button-disabled-background-color: var(--color-alpha-light-24);
+  --button-disabled-foreground-color: var(--color-alpha-light-36);
+  /* Not in Figma — hover state for the enabled newsletter button on a dark surface. */
+  --button-hover-background-color: var(--color-alpha-light-36);
 }
