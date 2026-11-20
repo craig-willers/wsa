@@ -1,0 +1,51 @@
+/*
+ * WSA design tokens — mirrored from the Figma variables in
+ * "🤡 ＋ v3 (WSA) – Component Library". Names follow the Figma variable names.
+ */
+:root {
+  /* Color */
+  --color-grey-0: #ffffff;
+  --color-grey-800: #262626;
+  --text-color-default: #1b1b1b;
+  --border-color-subtle: #dfdfdf;
+  --action-neutral-background-color-default: rgba(164, 163, 168, 0);
+  --button-disabled-background-color: rgba(5, 5, 6, 0.04);
+
+  /* Spacing */
+  --padding-none: 0px;
+  --paddingxxs: 4px;
+  --paddingxs: 8px;
+  --paddingsm: 12px;
+  --padding: 16px;
+  --paddinglg: 24px;
+  --marginxs: 8px;
+  --marginlg: 24px;
+
+  /* Radius */
+  --borderradiussm: 4px;
+  --borderradiuslg: 8px;
+  --borderradiusround: 999px;
+
+  /* Typography — TT Turns is the brand face; fallbacks apply until it is licensed/loaded */
+  --font-family-brand: 'TT Turns', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Heading compact 02 */
+  --heading-compact-02-size: 16px;
+  --heading-compact-02-weight: 700;
+  --heading-compact-02-line-height: 22px;
+  --heading-compact-02-letter-spacing: -0.16px;
+
+  /* Label 03 */
+  --label-03-size: 14px;
+  --label-03-weight: 500;
+  --label-03-emphasis-weight: 600;
+  --label-03-line-height: 18px;
+  --label-03-letter-spacing: 0.16px;
+
+  /* Label 02 */
+  --label-02-size: 12px;
+  --label-02-weight: 500;
+  --label-02-emphasis-weight: 600;
+  --label-02-line-height: 16px;
+  --label-02-letter-spacing: 0.32px;
+}
